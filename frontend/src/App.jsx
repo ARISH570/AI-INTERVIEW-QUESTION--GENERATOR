@@ -14,7 +14,7 @@ function App() {
     formData.append("resume", file);
 
     try {
-      const response = await fetch("https://ai-interview-question-generator.onrender.com", {
+      const response = await fetch("https://ai-interview-question-generator.onrender.com/upload", {
 
         method: "POST",
         body: formData,
