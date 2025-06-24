@@ -30,7 +30,7 @@ app.post("/upload", upload.single("resume"), async (req, res) => {
         const pdfData = await pdfParse(dataBuffer);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-        const prompt = `Generate 5 interview questions based on this resume:\n${pdfData.text}`;
+        const prompt = `Generate as much as you need the interview questions based on this resume:\n${pdfData.text}`;
 
         const response = await model.generateContent(prompt);
         const textResponse = response.response.text(); // ✅ Correct response handling
