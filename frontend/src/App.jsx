@@ -296,7 +296,7 @@ function App() {
         {!loading && questions.length === 0 && !atsResult && (
           <div className="text-center text-gray-400 mt-16">
             <img
-              src="https://illustrations.popsy.co/gray/resume.svg"
+              src={RESUME2}
               alt="Upload Resume"
               className="w-52 mx-auto mb-4 opacity-80"
             />
