@@ -24,7 +24,7 @@ app.use(cors());
 /* =========================================================
    1️⃣ AI INTERVIEW QUESTION GENERATOR
 ========================================================= */
-app.post("/upload", upload.single("resume"), async (req, res) => {
+app.post("/api/upload", upload.single("resume"), async (req, res) => {
     if (!req.file) {
         return res.status(400).send("No file uploaded");
     }
@@ -58,7 +58,7 @@ ${pdfData.text}
 /* =========================================================
    2️⃣ AI-POWERED ATS RESUME ANALYZER
 ========================================================= */
-app.post("/ats-analyze", upload.single("resume"), async (req, res) => {
+app.post("/api/ats-analyze", upload.single("resume"), async (req, res) => {
     if (!req.file || !req.body.jobDescription) {
         return res.status(400).json({
             error: "Resume PDF and Job Description are required",
