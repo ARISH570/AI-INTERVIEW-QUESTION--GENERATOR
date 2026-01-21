@@ -178,9 +178,24 @@ function App() {
 
         {/* ================= RESULTS AREA ================= */}
         {/* ================= RESULTS AREA ================= */}
+        {/* ================= RESULTS AREA ================= */}
         {(questions.length > 0 || atsResult) && (
           <div className="grid md:grid-cols-3 gap-8 items-start animate-fade-in mb-20">
-            {/* ... (Gauge code stays the same) ... */}
+
+            {/* ATS Score Gauge (Only shows in ATS mode) */}
+            {mode === "ats" && atsResult && (
+              <div className="bg-white/80 dark:bg-gray-900/80 p-8 rounded-[2rem] border border-white/20 dark:border-gray-800 text-center shadow-xl">
+                <h3 className="text-gray-500 dark:text-gray-400 font-bold uppercase text-xs tracking-widest mb-4">ATS Match Score</h3>
+                <div className="relative inline-flex items-center justify-center">
+                  <svg className="w-32 h-32">
+                    <circle className="text-gray-200 dark:text-gray-800" strokeWidth="10" stroke="currentColor" fill="transparent" r="50" cx="64" cy="64" />
+                    <circle className="text-blue-600" strokeWidth="10" strokeDasharray={314} strokeDashoffset={314 - (314 * atsResult.atsScore) / 100} strokeLinecap="round" stroke="currentColor" fill="transparent" r="50" cx="64" cy="64" />
+                  </svg>
+                  <span className="absolute text-3xl font-black dark:text-white">{atsResult.atsScore}%</span>
+                </div>
+                <p className="mt-4 font-bold text-blue-600 uppercase text-sm">{atsResult.finalVerdict}</p>
+              </div>
+            )}
 
             <div className={`${mode === "ats" && atsResult ? 'md:col-span-2' : 'md:col-span-3'} bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-white/20 dark:border-gray-800 rounded-[2rem] p-10 shadow-2xl`}>
               <h2 className="text-2xl font-black mb-6 text-gray-900 dark:text-white flex items-center gap-3">
@@ -188,11 +203,34 @@ function App() {
                 {mode === "questions" ? "Interview Prep Guide" : "Analysis Feedback"}
               </h2>
 
-              {/* FIXED: Added dark:text-gray-100 and ensured prose-invert is present */}
-              <div className="prose max-w-none dark:prose-invert dark:text-gray-100 prose-p:leading-relaxed text-gray-800">
-                <ReactMarkdown>
-                  {questions.length > 0 ? questions.join("\n") : atsResult?.feedback}
-                </ReactMarkdown>
+              <div className="prose max-w-none dark:prose-invert dark:text-gray-100 text-gray-800">
+                {mode === "questions" ? (
+                  <ReactMarkdown>{questions.join("\n")}</ReactMarkdown>
+                ) : (
+                  <div className="space-y-6">
+                    {/* Render ATS Specific Sections */}
+                    <div>
+                      <h4 className="text-blue-600 font-bold mb-2">✅ Matched Skills</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {atsResult.matchedSkills?.map(s => <span key={s} className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-lg text-sm">{s}</span>)}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="text-red-500 font-bold mb-2">❌ Missing Skills</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {atsResult.missingSkills?.map(s => <span key={s} className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg text-sm">{s}</span>)}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="text-purple-500 font-bold mb-2">💡 Suggestions</h4>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {atsResult.improvementSuggestions?.map((s, i) => <li key={i}>{s}</li>)}
+                      </ul>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
